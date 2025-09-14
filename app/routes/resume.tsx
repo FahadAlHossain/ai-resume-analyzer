@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import { usePuterStore } from "~/lib/puter";
-import bg from "../../public/assets/public/images/bg-small.svg";
+import bg from "/assets/public/images/bg-small.svg";
+import Summary from "~/components/Summary";
+import ATS from "~/components/ATS";
+import Details from "~/components/Details";
 
 export const meta = () => [
   {
@@ -15,7 +18,7 @@ const resume = () => {
   const { id } = useParams();
   const [imageUrl, setImageUrl] = useState("");
   const [resumeUrl, setResumeUrl] = useState("");
-  const [feedback, setFeedBack] = useState("");
+  const [feedback, setFeedBack] = useState<Feedback | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -86,7 +89,9 @@ const resume = () => {
           </h2>
           {feedback ? (
             <div className="flex flex-col gap-8 animate-in fade-in duration-1000">
-              Summary ATS Details
+              <Summary feedback={feedback}/>
+              <ATS score={feedback.ATS.score || 0} suggestions={feedback.ATS.tips || []}/>
+              <Details feedback={feedback}/>
             </div>
           ) : (
             <img src="/assets/public/images/resume-scan-2.gif" alt="" className="w-full"/>
